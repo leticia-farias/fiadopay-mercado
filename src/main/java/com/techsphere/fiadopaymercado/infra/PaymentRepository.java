@@ -5,13 +5,11 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class PaymentRepository {
 
     private static PaymentRepository instance;
 
     private PaymentRepository() {
-        //garantir que a tabela existe ao iniciar o repositório
         DatabaseManager.initialize();
     }
 
@@ -21,27 +19,24 @@ public class PaymentRepository {
     }
 
     public void save(PaymentResponse payment) {
-        //tenta update, se não afetar linhas, faz insert (upsert manual)
         String updateSQL = "UPDATE payments SET status = ?, amount = ?, method = ? WHERE id = ?";
         String insertSQL = "INSERT INTO payments (id, status, amount, method) VALUES (?, ?, ?, ?)";
 
         try (Connection conc = DatabaseManager.getConnection()) {
-            // vai tentar atualizar
             try (PreparedStatement stmt = conc.prepareStatement(updateSQL)) {
-                stmt.setString(1, payment.getStatus());
-                stmt.setBigDecimal(2, payment.getAmount());
-                stmt.setString(3, payment.getMethod());
-                stmt.setString(4, payment.getId());
+                stmt.setString(1, payment.status());
+                stmt.setBigDecimal(2, payment.amount());
+                stmt.setString(3, payment.method());
+                stmt.setString(4, payment.id());
                 
                 int linhas = stmt.executeUpdate();
                 
                 if (linhas == 0) {
-                    // se não atualizou nada, é porque não existe -> INSERIR
                     try (PreparedStatement insertStmt = conc.prepareStatement(insertSQL)) {
-                        insertStmt.setString(1, payment.getId());
-                        insertStmt.setString(2, payment.getStatus());
-                        insertStmt.setBigDecimal(3, payment.getAmount());
-                        insertStmt.setString(4, payment.getMethod());
+                        insertStmt.setString(1, payment.id());
+                        insertStmt.setString(2, payment.status());
+                        insertStmt.setBigDecimal(3, payment.amount());
+                        insertStmt.setString(4, payment.method());
                         insertStmt.executeUpdate();
                     }
                 }
@@ -60,11 +55,15 @@ public class PaymentRepository {
              ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
-                PaymentResponse p = new PaymentResponse();
-                p.setId(rs.getString("id"));
-                p.setStatus(rs.getString("status"));
-                p.setAmount(rs.getBigDecimal("amount"));
-                p.setMethod(rs.getString("method"));
+                PaymentResponse p = new PaymentResponse(
+                    rs.getString("id"),
+                    rs.getString("status"),
+                    rs.getString("method"),
+                    rs.getBigDecimal("amount"),
+                    null, // installments
+                    null, // total
+                    null  // interestRate
+                );
                 list.add(p);
             }
         } catch (SQLException e) {
