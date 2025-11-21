@@ -65,10 +65,10 @@ public class WebhookServer {
 	                    PaymentResponse pagamento = mapper.readValue(json, PaymentResponse.class);
 	                    repository.save(pagamento);
 	                    
-	                    System.out.println("[Webhook-Worker] Pagamento " + pagamento.getId() + " atualizado via Webhook para: " + pagamento.getStatus());
+	                    System.out.println("Pagamento " + pagamento.getId() + " atualizado via Webhook para: " + pagamento.getStatus());
 
 	                } catch (Exception e) {
-	                    System.err.println("[Webhook-Worker] Erro ao processar evento: " + e.getMessage());
+	                    System.err.println("Erro ao processar evento: " + e.getMessage());
 	                }
 	            }
 	        }).start();
