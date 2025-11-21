@@ -8,5 +8,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface AntiFraud {
-    double maxAmount() default 1000.00; // Limite padrão se não especificar
+    double maxAmount() default 1000.00;
 }
