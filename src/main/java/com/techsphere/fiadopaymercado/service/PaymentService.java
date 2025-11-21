@@ -43,7 +43,7 @@ public class PaymentService {
 
             // 4. Salva no banco local
             repository.save(response);
-            System.out.println("Pagamento CRIADO com sucesso! ID: " + response.getId() + " Status: " + response.getStatus());
+            System.out.println("Pagamento CRIADO com sucesso! ID: " + response.id() + " Status: " + response.status());
 
         } catch (Exception e) {
             System.err.println("Erro ao processar pagamento: " + e.getMessage());

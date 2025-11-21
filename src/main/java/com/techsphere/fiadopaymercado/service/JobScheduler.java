@@ -53,14 +53,14 @@ public class JobScheduler {
                 for (PaymentResponse p : pendentes) {
                     // GET /gateway/payments/{id}
                     PaymentResponse atualizado = client.get(
-                        "/fiadopay/gateway/payments/" + p.getId(), 
+                        "/fiadopay/gateway/payments/" + p.id(), 
                         PaymentResponse.class, 
                         token
                     );
                     
                     // Se mudou de status, atualiza no banco
-                    if (!atualizado.getStatus().equals(p.getStatus())) {
-                        System.out.println("Status alterado! " + p.getId() + ": " + p.getStatus() + " -> " + atualizado.getStatus());
+                    if (!atualizado.status().equals(p.status())) {
+                        System.out.println("Status alterado! " + p.id() + ": " + p.status() + " -> " + atualizado.status());
                         repository.save(atualizado);
                     }
                 }
