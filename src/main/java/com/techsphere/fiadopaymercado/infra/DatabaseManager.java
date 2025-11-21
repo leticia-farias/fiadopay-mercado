@@ -9,9 +9,18 @@ public class DatabaseManager {
     
     private static final String URL = "jdbc:h2:./fiadopay_client_db"; 
     private static final String USER = "sa";
-    private static final String PASSWORD = ""; // senha vazia msm
+    private static final String PASSWORD = ""; 
 
-    //garantir que a tabela existe, ta executando uma vez só
+    // BLOCO NOVO: Força o carregamento do Driver H2
+    static {
+        try {
+            Class.forName("org.h2.Driver");
+        } catch (ClassNotFoundException e) {
+            System.err.println("ERRO FATAL: Driver H2 não encontrado no classpath! Verifique o Maven.");
+            e.printStackTrace();
+        }
+    }
+
     public static void initialize() {
         String sql = "CREATE TABLE IF NOT EXISTS payments (" +
                      "id VARCHAR(255) PRIMARY KEY, " +
