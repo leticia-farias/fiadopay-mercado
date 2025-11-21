@@ -18,36 +18,58 @@ public class FiadoPayClient {
     private final ObjectMapper objectMapper;
     
     public FiadoPayClient() {
+    	// cria um cliente HTTP com timeout de conexão para não travar o sistema
         this.httpClient = HttpClient.newBuilder()
                 .connectTimeout(TIMEOUT)
                 .build();
+        // instancia o serializador JSON do Jackson
         this.objectMapper = new ObjectMapper();
     }
     
-    public String post(String endpoint, Object body, String token) throws IOException, InterruptedException {
-        String jsonBody = objectMapper.writeValueAsString(body); // serializa DTO para JSON string
-        
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(baseUrl + endpoint))
-                .header("Content-Type", "application/json")
-                .header("Authorization", "Bearer " + token) // adiciona o token de autorização
-                .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
-                .build();
+    // chamada POST genérica
+    public <T> T post(String endpoint, Object body, Class<T> responseType, String token) {
+        try {
+            String jsonBody = objectMapper.writeValueAsString(body);
 
-        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-        
-        return response.body();
+            HttpRequest.Builder builder = HttpRequest.newBuilder()
+                    .uri(URI.create(baseUrl + endpoint))
+                    .timeout(Duration.ofSeconds(10))
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(jsonBody));
+
+            if (token != null) {
+                builder.header("Authorization", "Bearer " + token);
+            }
+
+            HttpRequest request = builder.build();
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            return objectMapper.readValue(response.body(), responseType);
+
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException("Erro na comunicação com FiadoPay: " + e.getMessage(), e);
+        }
     }
-    
-    public String get(String endpoint, String token) throws IOException, InterruptedException {
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(baseUrl + endpoint))
-                .header("Authorization", "Bearer " + token) // adiciona o token de autorização
-                .GET()
-                .build();
 
-        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+    // chamada GET genérica.
+    public <T> T get(String endpoint, Class<T> responseType, String token) {
+        try {
+            HttpRequest.Builder builder = HttpRequest.newBuilder()
+                    .uri(URI.create(baseUrl + endpoint))
+                    .timeout(Duration.ofSeconds(10))
+                    .GET();
 
-        return response.body();
+            if (token != null) {
+                builder.header("Authorization", "Bearer " + token);
+            }
+
+            HttpRequest request = builder.build();
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            return objectMapper.readValue(response.body(), responseType);
+
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException("Erro na comunicação com FiadoPay: " + e.getMessage(), e);
+        }
     }
 }
