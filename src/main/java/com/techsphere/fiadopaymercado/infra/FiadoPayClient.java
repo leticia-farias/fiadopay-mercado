@@ -9,6 +9,7 @@ import java.time.Duration;
 import java.util.Map;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.techsphere.fiadopaymercado.domain.RefundRequest;
 
 public class FiadoPayClient {
     private static final String baseUrl = "http://localhost:8080";
@@ -77,14 +78,14 @@ public class FiadoPayClient {
         }
     }
 
-    // Método NOVO para Devolução
+    // método para Devolução
     public void refund(String paymentId, String token) {
         try {
-            // Payload simples para o estorno (pode variar conforme API, assumindo vazio ou motivo genérico)
-            String jsonBody = "{\"reason\":\"Solicitado pelo cliente\"}";
+            RefundRequest bodyObj = new RefundRequest(paymentId);
+            String jsonBody = objectMapper.writeValueAsString(bodyObj);
 
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(baseUrl + "/fiadopay/gateway/refunds/" + paymentId)) // Ajuste conforme a rota real da API
+                    .uri(URI.create(baseUrl + "/fiadopay/gateway/refunds")) 
                     .timeout(Duration.ofSeconds(10))
                     .header("Content-Type", "application/json")
                     .header("Authorization", "Bearer " + token)
@@ -94,7 +95,7 @@ public class FiadoPayClient {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() != 200 && response.statusCode() != 204) {
-                throw new RuntimeException("Falha no estorno: " + response.body());
+                throw new RuntimeException("Falha no estorno (Status " + response.statusCode() + "): " + response.body());
             }
             
         } catch (IOException | InterruptedException e) {

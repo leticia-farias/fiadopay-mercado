@@ -87,17 +87,19 @@ public class App {
 				}
 
 			} else if ("2".equals(opcao)) {
-				System.out.println("\n[Solicitar Devolução]");
-				System.out.print("ID do Pagamento (copie do banco ou console): ");
-				String id = scanner.nextLine().trim();
-
-				if (!id.isEmpty()) {
-					service.solicitarEstorno(id);
-				} else {
-					System.out.println(">>> ID não informado.");
-				}
-
-			} else if ("3".equals(opcao)) {
+                System.out.println("\n[Solicitar Devolução]");
+                System.out.print("ID do Pagamento (copie do banco ou console): ");
+                String rawId = scanner.nextLine().trim();
+                
+                String id = rawId.split(" ")[0];
+                
+                if (!id.isEmpty()) {
+                    service.solicitarEstorno(id);
+                } else {
+                    System.out.println(">>> ID não informado.");
+                }
+                
+            } else if ("3".equals(opcao)) {
 				System.out.println("Saindo...");
 				break;
 			} else {
