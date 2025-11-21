@@ -45,14 +45,14 @@ public class WebhookServer {
 	        
 	        server.setExecutor(null); // Default executor
 	        server.start();
-	        System.out.println(">>> Servidor de Webhook ouvindo na porta " + PORT);
+	        System.out.println("Servidor de Webhook ouvindo na porta " + PORT);
 
 	        // inicia a thread consumidora (worker)
 	        iniciarWorker();
 	    }
 	    private void iniciarWorker() {
 	        new Thread(() -> {
-	            System.out.println(">>> Worker de Webhook iniciado.");
+	            System.out.println("Worker de Webhook iniciado.");
 	            while (true) {
 	                try {
 	                    //  fica bloqueado aqui até chegar algo na fila (consumer)
