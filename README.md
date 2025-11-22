@@ -129,3 +129,6 @@ A persistência é evidenciada pela tabela H2, que armazena transações (Padrã
 <img width="737" height="672" alt="Captura de tela 2025-11-22 001949" src="https://github.com/user-attachments/assets/b6dbc952-fba6-45f8-bc42-80de604816a7" />
 <img width="975" height="693" alt="Captura de tela 2025-11-22 002113" src="https://github.com/user-attachments/assets/eeda9bf6-2141-489b-88ec-9fed460f5653" />
 
+
+Criação de um parágrafo de transparência para inclusão no README, informando sobre o uso de Inteligência Artificial como assistente auxiliar na documentação e design.
+
