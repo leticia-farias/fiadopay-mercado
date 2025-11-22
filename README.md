@@ -130,5 +130,5 @@ A persistência é evidenciada pela tabela H2, que armazena transações (Padrã
 <img width="975" height="693" alt="Captura de tela 2025-11-22 002113" src="https://github.com/user-attachments/assets/eeda9bf6-2141-489b-88ec-9fed460f5653" />
 
 
-Criação de um parágrafo de transparência para inclusão no README, informando sobre o uso de Inteligência Artificial como assistente auxiliar na documentação e design.
-
+##  Transparência sobre o Uso de Inteligência Artificial
+Este projeto contou com o auxílio de ferramentas de Inteligência Artificial (IA) como assistente no processo de desenvolvimento. A IA foi utilizada como suporte na elaboração da documentação técnica, na estruturação de decisões arquiteturais e na organização do design do sistema. Todo o conteúdo gerado com auxílio de IA foi revisado, validado e adaptado pelo grupo para garantir a precisão, coerência e adequação ao contexto do projeto. A responsabilidade final sobre o código, a arquitetura e a documentação permanece integralmente com os autores do repositório.
