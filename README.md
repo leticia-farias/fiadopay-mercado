@@ -46,7 +46,6 @@ Para permitir rastreamento mais fácil e depuração, o sistema pode usar:
 
 ## 5. Threads
 
-Possíveis usos de threads no sistema:
 
 - Listener de webhook pode rodar em uma thread separada para não bloquear o processamento normal do servidor.  
 - Processamento assíncrono: quando uma notificação chega, usar thread pool para processar a atualização (salvar no banco, atualizar status do pedido) sem atrasar a resposta HTTP ao Mercado Pago.  
