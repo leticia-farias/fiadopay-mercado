@@ -13,8 +13,6 @@ Motivações principais:
 
 ## 2. Decisões de Design
 
-Aqui estão algumas das principais decisões de arquitetura e design:
-
 - **Linguagem & Framework**: Usar Java (como indica a estrutura do projeto).  
 - **Persistência**: Banco de dados embutido (ou leve) para manter registros de pagamentos, clientes, pedidos, etc. (vejo no repositório algo como `fiadopay_client_db.mv.db`).  
 - **Separação de camadas**:  
@@ -26,8 +24,6 @@ Aqui estão algumas das principais decisões de arquitetura e design:
 - **Construção / Build**: usar Maven (pom.xml presente) para gerir dependências e empacotamento.
 
 ## 3. Anotações Criadas e Metadados
-
-No diretório `annotations/`, você provavelmente tem arquivos que representam anotações de eventos importantes, como:
 
 - `PagamentoCriado.annotation`: pode registrar quando uma preferência de pagamento foi criada.  
 - `PagamentoAtualizado.annotation`: quando uma notificação webhook altera o status.  
@@ -57,8 +53,6 @@ Possíveis usos de threads no sistema:
 - Jobs de verificação: thread periódica para “polling” de status de pedidos antigos, caso haja dúvidas se uma notificação foi perdida.
 
 ## 6. Padrões Aplicados
-
-Alguns padrões de projeto e arquitetura que fazem sentido para este tipo de aplicação:
 
 - **Observer / Event Sourcing**: com as “anotações” (events) para registrar mudanças de estado das transações.  
 - **DAO / Repository**: para separar a lógica de acesso a dados (persistência de pedidos, clientes, anotações) da lógica de negócio.  
